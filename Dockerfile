@@ -1,21 +1,15 @@
-# Build stage
-FROM maven:3.8.7-openjdk-17 AS build
+# Use official OpenJDK 17 slim image
+FROM openjdk:17-slim
 
+# Set working directory
 WORKDIR /app
 
-# Copy source code and build
-COPY pom.xml .
-COPY src ./src
+# Copy the built jar
+COPY target/*.jar app.jar
 
-RUN mvn clean package -DskipTests
+# Use Render's dynamic PORT
+ENV PORT ${PORT}
+EXPOSE ${PORT}
 
-# Run stage
-FROM openjdk:17-jdk-slim
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# Run the jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
