@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tennis Scheduler</title>
+</head>
+<body>
+<h1>Tennis Scheduler</h1>
+
+<h2>Add Tournament</h2>
+<form th:action="@{/tournaments/add}" method="post">
+    Name: <input type="text" name="name"/>
+    Location: <input type="text" name="location"/>
+    Date: <input type="text" name="date"/>
+    <button type="submit">Add</button>
+</form>
+
+<h2>Existing Tournaments</h2>
+<ul>
+    <li th:each="t : ${tournaments}">
+        <form th:action="@{/tournaments/update}" method="post" style="display:inline">
+            <input type="hidden" name="id" th:value="${t.id}" />
+            <input type="text" name="name" th:value="${t.name}" />
+            <input type="text" name="location" th:value="${t.location}" />
+            <input type="text" name="date" th:value="${t.date}" />
+            <button type="submit">Update</button>
+        </form>
+        <form th:action="@{/tournaments/delete}" method="post" style="display:inline">
+            <input type="hidden" name="id" th:value="${t.id}" />
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+
+<h2>Add Player</h2>
+<form th:action="@{/players/add}" method="post">
+    Name: <input type="text" name="name"/>
+    <button type="submit">Add</button>
+</form>
+
+<h2>Add Match</h2>
+<form th:action="@{/matches/add}" method="post">
+    Tournament:
+    <select name="tournamentId" th:each="t : ${tournaments}" th:value="${t.id}" th:text="${t.name}"></select>
+    Player 1:
+    <select name="player1Id" th:each="p : ${players}" th:value="${p.id}" th:text="${p.name}"></select>
+    Player 2:
+    <select name="player2Id" th:each="p : ${players}" th:value="${p.id}" th:text="${p.name}"></select>
+    Date: <input type="text" name="date"/>
+    <button type="submit">Add Match</button>
+</form>
+
+<h2>Matches</h2>
+<ul>
+    <li th:each="m : ${matches}">
+        <span th:text="${m.tournament.name}"></span>:
+        <span th:text="${m.player1.name}"></span> vs
+        <span th:text="${m.player2.name}"></span> on
+        <span th:text="${m.date}"></span>
+    </li>
+</ul>
+
+</body>
+</html>

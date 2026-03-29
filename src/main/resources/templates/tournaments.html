@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Tournaments</title>
+</head>
+<body>
+<h1>Tournaments</h1>
+
+<form action="#" th:action="@{/tournaments}" method="post">
+  Name: <input type="text" name="name">
+  Location: <input type="text" name="location">
+  Date: <input type="text" name="date">
+  <button type="submit">Add Tournament</button>
+</form>
+
+<ul>
+  <li th:each="tournament : ${tournaments}">
+    <span th:text="${tournament.name}"></span> -
+    <span th:text="${tournament.location}"></span> -
+    <span th:text="${tournament.date}"></span>
+  </li>
+</ul>
+</body>
+</html>
